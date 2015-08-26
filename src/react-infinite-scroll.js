@@ -11,7 +11,8 @@ module.exports = function (React) {
         loadMore: function () {},
         threshold: 250,
         loader: null,
-        component: React.DOM.div
+        component: React.DOM.div,
+        containerDOM: window
       };
     },
     getInitialState: function () {
@@ -48,7 +49,9 @@ module.exports = function (React) {
       if (!this.updated) return;
       var coords = this.getDOMNode().getBoundingClientRect();
 
-      if (coords.bottom < window.innerHeight + this.props.threshold) {
+      var bottomBound = (this.props.containerDOM === window) ? window.innerHeight : this.props.containerDOM.getBoundingClientRect().bottom;
+
+      if (coords.bottom < bottomBound + this.props.threshold) {
         this.updated = false;
         this.props.loadMore(this.pageLoaded += 1);
       }
@@ -57,11 +60,11 @@ module.exports = function (React) {
       if (!this.props.hasMore) {
         return;
       }
-      window.addEventListener('scroll', this.scrollListener);
+      this.props.containerDOM.addEventListener('scroll', this.scrollListener);
       this.scrollListener();
     },
     detachScrollListener: function () {
-      window.removeEventListener('scroll', this.scrollListener);
+      this.props.containerDOM.removeEventListener('scroll', this.scrollListener);
     },
     componentWillUnmount: function () {
       this.detachScrollListener();

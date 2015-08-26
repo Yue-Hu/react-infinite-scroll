@@ -25,7 +25,7 @@ module.exports = function (React) {
     },
     componentDidUpdate: function (prevProps) {
       this.updated = true;
-      if (prevProps.hasMore === this.props.hasMore) return;
+      if (prevProps.hasMore === this.props.hasMore && prevProps.containerDOM === this.props.containerDOM) return;
 
       if (!this.props.hasMore) {
         this.detachScrollListener();

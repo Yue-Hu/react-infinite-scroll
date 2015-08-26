@@ -57,7 +57,7 @@ module.exports = function (React) {
       }
     },
     attachScrollListener: function () {
-      if (!this.props.hasMore) {
+      if (!this.props.hasMore || !this.props.containerDOM) {
         return;
       }
       this.props.containerDOM.addEventListener('scroll', this.scrollListener);

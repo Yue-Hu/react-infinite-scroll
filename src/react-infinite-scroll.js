@@ -12,7 +12,8 @@ module.exports = function (React) {
         threshold: 250,
         loader: null,
         component: React.DOM.div,
-        containerDOM: window
+        containerDOM: window,
+        scrollingDOM: this.getDOMNode()
       };
     },
     getInitialState: function () {
@@ -47,7 +48,7 @@ module.exports = function (React) {
     },
     scrollListener: function () {
       if (!this.updated) return;
-      var coords = this.getDOMNode().getBoundingClientRect();
+      var coords = this.props.scrollingDOM.getBoundingClientRect();
 
       var bottomBound = (this.props.containerDOM === window) ? window.innerHeight : this.props.containerDOM.getBoundingClientRect().bottom;
 
@@ -57,7 +58,7 @@ module.exports = function (React) {
       }
     },
     attachScrollListener: function () {
-      if (!this.props.hasMore || !this.props.containerDOM) {
+      if (!this.props.hasMore || !this.props.containerDOM || !this.props.scrollingDOM) {
         return;
       }
       this.props.containerDOM.addEventListener('scroll', this.scrollListener);

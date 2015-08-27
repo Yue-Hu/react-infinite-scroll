@@ -13,7 +13,7 @@ module.exports = function (React) {
         loader: null,
         component: React.DOM.div,
         containerDOM: window,
-        scrollingDOM: this.getDOMNode()
+        scrollingDOM: null
       };
     },
     getInitialState: function () {
@@ -48,7 +48,10 @@ module.exports = function (React) {
     },
     scrollListener: function () {
       if (!this.updated) return;
-      var coords = this.props.scrollingDOM.getBoundingClientRect();
+
+      var scrollDomEl = this.props.scrollingDOM || this.getDOMNode();
+
+      var coords = scrollDomEl.getBoundingClientRect();
 
       var bottomBound = (this.props.containerDOM === window) ? window.innerHeight : this.props.containerDOM.getBoundingClientRect().bottom;
 
@@ -58,7 +61,7 @@ module.exports = function (React) {
       }
     },
     attachScrollListener: function () {
-      if (!this.props.hasMore || !this.props.containerDOM || !this.props.scrollingDOM) {
+      if (!this.props.hasMore || !this.props.containerDOM) {
         return;
       }
       this.props.containerDOM.addEventListener('scroll', this.scrollListener);
